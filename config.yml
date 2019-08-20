@@ -1,0 +1,8 @@
+logging:
+  level: INFO
+  loggers:
+    com.parag: DEBUG
+
+server:
+    rootPath: /api/*
+    dateFormat: yyyy-MM-dd'T'HH:mmZ
