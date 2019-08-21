@@ -1,4 +1,4 @@
-package com.parag.dropwizardrestapi.api;
+package com.parag.dropwizardrestapi.api.impl;
 
 import java.util.Date;
 
@@ -8,7 +8,9 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-public class Customer {
+import com.parag.dropwizardrestapi.api.DefaultDTO;
+
+public class Customer implements DefaultDTO {
 
 	@NotNull
 	private long id;
@@ -23,7 +25,6 @@ public class Customer {
 	@NotNull
 	private Date creationDate;
 
-		
 	public Customer(long id, String firstName, String lastName, String email, Date creationDate) {
 		this.id = id;
 		this.firstName = firstName;
