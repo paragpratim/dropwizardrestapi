@@ -13,5 +13,4 @@ public interface BaseDAO {
 	void update(long id, BaseDTO dto);
 
 	void remove(long id);
-
 }
