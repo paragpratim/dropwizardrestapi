@@ -8,9 +8,9 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.parag.dropwizardrestapi.api.DefaultDTO;
+import com.parag.dropwizardrestapi.api.BaseDTO;
 
-public class Customer implements DefaultDTO {
+public class CustomerDTO implements BaseDTO {
 
 	@NotNull
 	private long id;
@@ -25,7 +25,7 @@ public class Customer implements DefaultDTO {
 	@NotNull
 	private Date creationDate;
 
-	public Customer(long id, String firstName, String lastName, String email, Date creationDate) {
+	public CustomerDTO(long id, String firstName, String lastName, String email, Date creationDate) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;

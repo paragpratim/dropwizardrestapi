@@ -1,5 +1,5 @@
 package com.parag.dropwizardrestapi.api;
 
-public interface DefaultDTO {
+public interface BaseDTO {
 
 }

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.parag.dropwizardrestapi.core.di.ApplicationBusinessLogicModule;
-import com.parag.dropwizardrestapi.resources.DefaultResource;
+import com.parag.dropwizardrestapi.resources.BaseResource;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -39,7 +39,7 @@ public class DropwizardrestapiApplication extends Application<DropwizardrestapiC
 	public void run(final DropwizardrestapiConfiguration configuration, final Environment environment) {
 		DateFormat eventDateFormat = new SimpleDateFormat(configuration.getDateFormat());
 		environment.getObjectMapper().setDateFormat(eventDateFormat);
-		DefaultResource customerResources = injector.getInstance(DefaultResource.class);
+		BaseResource customerResources = injector.getInstance(BaseResource.class);
 		environment.jersey().register(customerResources);
 	}
 

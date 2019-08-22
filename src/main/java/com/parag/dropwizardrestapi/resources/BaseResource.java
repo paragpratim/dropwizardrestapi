@@ -1,5 +1,5 @@
 package com.parag.dropwizardrestapi.resources;
 
-public interface DefaultResource {
+public interface BaseResource {
 
 }

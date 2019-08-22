@@ -5,31 +5,31 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.parag.dropwizardrestapi.api.DefaultDTO;
-import com.parag.dropwizardrestapi.api.impl.Customer;
-import com.parag.dropwizardrestapi.db.DafaultDAO;
+import com.parag.dropwizardrestapi.api.BaseDTO;
+import com.parag.dropwizardrestapi.api.impl.CustomerDTO;
+import com.parag.dropwizardrestapi.db.BaseDAO;
 
-public class CustomerDAO implements DafaultDAO {
+public class CustomerDAO implements BaseDAO {
 
-	private static Map<Integer, DefaultDTO> customers = new HashMap<>();
+	private static Map<Integer, BaseDTO> customers = new HashMap<>();
 	static {
-		customers.put(1, new Customer(1, "Parag", "Ghosh", "paragpratim@gmail.com", new Date()));
-		customers.put(2, new Customer(2, "John", "Doe", "john.doe@abc.com", new Date()));
-		customers.put(3, new Customer(3, "Jane", "Doe", "jane.doe@abc.com", new Date()));
+		customers.put(1, new CustomerDTO(1, "Parag", "Ghosh", "paragpratim@gmail.com", new Date()));
+		customers.put(2, new CustomerDTO(2, "John", "Doe", "john.doe@abc.com", new Date()));
+		customers.put(3, new CustomerDTO(3, "Jane", "Doe", "jane.doe@abc.com", new Date()));
 	}
 
 	@Override
-	public ArrayList<DefaultDTO> getAll() {
+	public ArrayList<BaseDTO> getAll() {
 		return new ArrayList<>(customers.values());
 	}
 
 	@Override
-	public DefaultDTO get(long id) {
+	public BaseDTO get(long id) {
 		return customers.get(Math.toIntExact(id));
 	}
 
 	@Override
-	public void update(long id, DefaultDTO resource) {
+	public void update(long id, BaseDTO resource) {
 		customers.put(Math.toIntExact(id), resource);
 
 	}
