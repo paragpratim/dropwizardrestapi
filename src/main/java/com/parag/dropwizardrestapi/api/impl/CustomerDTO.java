@@ -33,6 +33,11 @@ public class CustomerDTO implements BaseDTO {
 		this.creationDate = creationDate;
 	}
 
+	@SuppressWarnings("squid:S2637")
+	public CustomerDTO() {
+		// Constructor for serialization
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -75,7 +80,7 @@ public class CustomerDTO implements BaseDTO {
 
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+		return "CustomerDTO [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", creationDate=" + creationDate + "]";
 	}
 
