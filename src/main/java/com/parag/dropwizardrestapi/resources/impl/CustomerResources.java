@@ -52,6 +52,7 @@ public class CustomerResources implements BaseResource<CustomerDTO> {
 		}
 	}
 
+	@SuppressWarnings("squid:S4144")
 	@Override
 	public Response update(CustomerDTO aDTO) throws URISyntaxException {
 		BaseDTO existingCustomer = customerDAO.get(aDTO.getId());

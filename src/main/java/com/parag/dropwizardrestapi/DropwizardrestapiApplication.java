@@ -35,6 +35,7 @@ public class DropwizardrestapiApplication extends Application<DropwizardrestapiC
 		// TODO: application initialization
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void run(final DropwizardrestapiConfiguration configuration, final Environment environment) {
 		DateFormat eventDateFormat = new SimpleDateFormat(configuration.getDateFormat());
