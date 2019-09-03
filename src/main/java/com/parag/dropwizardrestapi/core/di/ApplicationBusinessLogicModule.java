@@ -9,7 +9,11 @@ public class ApplicationBusinessLogicModule extends CoreBusinessLogicModule {
 
 	@Override
 	protected void configure() {
-		bind(BaseDAO.class, CustomerDAO.class);
 		bind(BaseResource.class, CustomerResources.class);
+		//getDAOBindings();
+	}
+
+	protected void getDAOBindings() {
+		//bind(BaseDAO.class, CustomerDAO.class);
 	}
 }

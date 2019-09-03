@@ -10,9 +10,11 @@ public class TestApplicationBusinessLogicModule extends ApplicationBusinessLogic
 	@Override
 	protected void configure() {
 		super.configure();
+		getDAOBindings();
+	}
 
+	protected void getDAOBindings() {
 		// Bind DAOs for mock and make sure they are serializable.
 		bind(BaseDAO.class).toInstance(Mockito.mock(CustomerDAO.class, Mockito.withSettings().serializable()));
 	}
-
 }
