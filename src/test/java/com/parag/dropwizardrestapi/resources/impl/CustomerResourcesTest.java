@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
-import org.assertj.core.api.Assertions;
 import org.junit.ClassRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,14 +20,13 @@ import com.google.inject.Inject;
 import com.parag.dropwizardrestapi.api.BaseDTO;
 import com.parag.dropwizardrestapi.api.impl.CustomerDTO;
 import com.parag.dropwizardrestapi.core.di.TestApplicationBusinessLogicModule;
-import com.parag.dropwizardrestapi.core.testutils.GuiceExtension;
-import com.parag.dropwizardrestapi.core.testutils.IncludeModule;
+import com.parag.dropwizardrestapi.core.testutils.GuiceJUnit5Extension;
 import com.parag.dropwizardrestapi.db.BaseDAO;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
 
-@ExtendWith(GuiceExtension.class)
-@IncludeModule(TestApplicationBusinessLogicModule.class)
+@ExtendWith(GuiceJUnit5Extension.class)
+@GuiceJUnit5Extension.GuiceModules(TestApplicationBusinessLogicModule.class)
 public class CustomerResourcesTest {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-DD");

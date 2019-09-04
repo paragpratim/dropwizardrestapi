@@ -6,16 +6,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.junit.runners.model.InitializationError;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-public class GuiceJUnitRunner extends BlockJUnit4ClassRunner {
-
-	private Injector injector;
+public class GuiceJUnit5Extension implements TestInstancePostProcessor {
 
 	@Target(ElementType.TYPE)
 	@Retention(RetentionPolicy.RUNTIME)
@@ -25,16 +24,14 @@ public class GuiceJUnitRunner extends BlockJUnit4ClassRunner {
 	}
 
 	@Override
-	public Object createTest() throws Exception {
-		Object obj = super.createTest();
-		injector.injectMembers(obj);
-		return obj;
+	public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
+		Class<?>[] classes = getModulesFor(testInstance.getClass());
+		Injector injector = createInjectorFor(classes);
+		injector.injectMembers(testInstance);
 	}
 
-	public GuiceJUnitRunner(Class<?> klass) throws InitializationError {
-		super(klass);
-		Class<?>[] classes = getModulesFor(klass);
-		injector = createInjectorFor(classes);
+	public GuiceJUnit5Extension() {
+		super();
 	}
 
 	private Injector createInjectorFor(Class<?>[] classes) throws InitializationError {
@@ -55,5 +52,4 @@ public class GuiceJUnitRunner extends BlockJUnit4ClassRunner {
 			throw new InitializationError("Missing @GuiceModules annotation for unit test '" + klass.getName() + "'");
 		return annotation.value();
 	}
-
 }

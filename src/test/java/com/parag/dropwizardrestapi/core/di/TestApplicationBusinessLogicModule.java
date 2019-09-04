@@ -8,11 +8,6 @@ import com.parag.dropwizardrestapi.db.impl.CustomerDAO;
 public class TestApplicationBusinessLogicModule extends ApplicationBusinessLogicModule {
 
 	@Override
-	protected void configure() {
-		super.configure();
-		getDAOBindings();
-	}
-
 	protected void getDAOBindings() {
 		// Bind DAOs for mock and make sure they are serializable.
 		bind(BaseDAO.class).toInstance(Mockito.mock(CustomerDAO.class, Mockito.withSettings().serializable()));
