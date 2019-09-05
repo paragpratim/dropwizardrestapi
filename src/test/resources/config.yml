@@ -1,0 +1,14 @@
+logging:
+  level: INFO
+  loggers:
+    com.parag: DEBUG
+
+server:
+      rootPath: /api/*
+      applicationConnectors:
+        - type: http 
+          port: 9000
+      adminConnectors:
+        - type: http
+          port: 9001
+dateFormat: yyyy-MM-dd'T'HH:mmZ

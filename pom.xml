@@ -171,6 +171,18 @@
 				<executions> <execution> <id>attach-javadocs</id> <goals> <goal>jar</goal> 
 				</goals> </execution> </executions> </plugin> -->
 		</plugins>
+
+		<testResources>
+			<testResource>
+				<directory>${project.basedir}/src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<directory>${project.basedir}</directory>
+				<includes>
+					<include>config.yml</include>
+				</includes>
+			</testResource>
+		</testResources>
 	</build>
 
 	<reporting>
