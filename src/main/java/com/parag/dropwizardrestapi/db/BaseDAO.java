@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import com.parag.dropwizardrestapi.api.BaseDTO;
 
-public interface BaseDAO {
+public interface BaseDAO<T extends BaseDTO> {
 
-	ArrayList<BaseDTO> getAll();
+	ArrayList<T> getAll();
 
-	BaseDTO get(long id);
+	T get(long id);
 
-	void update(long id, BaseDTO dto);
+	void update(long id, T dto);
 
 	void remove(long id);
 }

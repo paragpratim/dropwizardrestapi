@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.parag.dropwizardrestapi.api.impl.CustomerDTO;
 import com.parag.dropwizardrestapi.core.di.TestApplicationBusinessLogicModule;
 import com.parag.dropwizardrestapi.core.testutils.GuiceJUnit5Extension;
 import com.parag.dropwizardrestapi.db.BaseDAO;
@@ -17,10 +18,10 @@ public class SampleTest {
 	private static final Logger LOG = LoggerFactory.getLogger(SampleTest.class);
 
 	@Inject
-	private BaseDAO customerDAO;
+	private BaseDAO<CustomerDTO> customerDAO;
 
 	@Inject
-	private BaseResource customerResources;
+	private BaseResource<CustomerDTO> customerResources;
 
 	@Test
 	public void testGuiceInit() {
@@ -28,6 +29,7 @@ public class SampleTest {
 		LOG.info(customerDAO.getClass().toString());
 		LOG.info(customerResources.getClass().toString());
 		LOG.info(customerDAO.getAll().toString());
+		LOG.info(customerResources.getById(1).getEntity().toString());
 	}
 
 }

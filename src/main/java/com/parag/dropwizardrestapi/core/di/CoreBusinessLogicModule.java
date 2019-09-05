@@ -39,5 +39,4 @@ public abstract class CoreBusinessLogicModule extends AbstractModule {
 			bind(target).annotatedWith(Names.named(name)).to(toBind);
 		}
 	}
-
 }

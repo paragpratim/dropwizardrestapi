@@ -9,21 +9,25 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 import com.parag.dropwizardrestapi.api.BaseDTO;
 import com.parag.dropwizardrestapi.api.impl.CustomerDTO;
 import com.parag.dropwizardrestapi.db.BaseDAO;
-import com.parag.dropwizardrestapi.db.impl.CustomerDAO;
 import com.parag.dropwizardrestapi.resources.BaseResource;
 
 @Path("customers")
 @Produces(MediaType.APPLICATION_JSON)
 public class CustomerResources implements BaseResource<CustomerDTO> {
 
-	private BaseDAO customerDAO;
+	@SuppressWarnings("unused")
+	private static final Logger LOG = LoggerFactory.getLogger(CustomerResources.class);
+	private BaseDAO<CustomerDTO> customerDAO;
 
 	@Inject
-	public CustomerResources(CustomerDAO customerDAO) {
+	public CustomerResources(BaseDAO<CustomerDTO> customerDAO) {
 		this.customerDAO = customerDAO;
 	}
 
