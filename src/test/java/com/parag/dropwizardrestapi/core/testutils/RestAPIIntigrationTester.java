@@ -23,26 +23,34 @@ import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.Validators;
 import io.dropwizard.setup.Environment;
 
-public class RestApiTester extends Application<DropwizardrestapiConfiguration> {
+public class RestAPIIntigrationTester extends Application<DropwizardrestapiConfiguration> {
 
 	private static final Injector injector = Guice.createInjector(new TestApplicationBusinessLogicModule());
 
 	@Override
 	public void run(DropwizardrestapiConfiguration configuration, Environment environment) throws Exception {
-		DateFormat eventDateFormat = new SimpleDateFormat(getTestConfiguration().getDateFormat());
+		DateFormat eventDateFormat = new SimpleDateFormat(configuration.getDateFormat());
 		environment.getObjectMapper().setDateFormat(eventDateFormat);
 		BaseResource<CustomerDTO> customerResources = injector.getInstance(new Key<BaseResource<CustomerDTO>>() {
 		});
 		environment.jersey().register(customerResources);
 	}
 
-	public DropwizardrestapiConfiguration getTestConfiguration() throws IOException, ConfigurationException {
+	public static DropwizardrestapiConfiguration getTestConfiguration() {
 		ObjectMapper objectMapper = Jackson.newObjectMapper();
 		Validator validator = Validators.newValidator();
 		YamlConfigurationFactory<DropwizardrestapiConfiguration> factory = new YamlConfigurationFactory<>(
 				DropwizardrestapiConfiguration.class, validator, objectMapper, "dw");
 		File yaml = new File(Thread.currentThread().getContextClassLoader().getResource("config.yml").getPath());
-		return factory.build(yaml);
+		try {
+			return factory.build(yaml);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} catch (ConfigurationException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
