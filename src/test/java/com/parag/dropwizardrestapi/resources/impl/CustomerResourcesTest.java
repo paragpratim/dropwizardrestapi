@@ -14,12 +14,13 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.parag.dropwizardrestapi.api.impl.CustomerDTO;
 import com.parag.dropwizardrestapi.core.di.TestApplicationBusinessLogicModule;
 import com.parag.dropwizardrestapi.core.testutils.GuiceJUnit5Extension;
-import com.parag.dropwizardrestapi.core.testutils.RestAPIResourcesTester;
 import com.parag.dropwizardrestapi.db.BaseDAO;
+import com.parag.dropwizardrestapi.resources.BaseResource;
 
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import io.dropwizard.testing.junit5.ResourceExtension;
@@ -30,17 +31,20 @@ import io.dropwizard.testing.junit5.ResourceExtension;
 public class CustomerResourcesTest {
 
 	public static final Logger LOG = LoggerFactory.getLogger(CustomerResourcesTest.class);
-
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD");
 	private CustomerDTO aCustomer;
 
 	@Inject
 	private BaseDAO<CustomerDTO> customerDAO;
 
-	public static final ResourceExtension resources = new RestAPIResourcesTester().addResource().build();
+	@Inject
+	private static BaseResource<CustomerDTO> customerResources;
+
+	private ResourceExtension resources = ResourceExtension.builder().build();
 
 	@BeforeEach
-	private void setUp() throws ParseException {
+	public void setUp() throws ParseException {
+		//resources.
 		aCustomer = new CustomerDTO(5, "Parag", "Ghosh", "paragpratim@gmail.com", dateFormat.parse("2019-08-24"));
 		Mockito.when(customerDAO.get(ArgumentMatchers.anyLong())).thenReturn(aCustomer);
 		ArrayList<CustomerDTO> customers = new ArrayList<>();
@@ -52,15 +56,20 @@ public class CustomerResourcesTest {
 	public void getAllCustomerTest() {
 
 		// List<CustomerDTO> expected = Collections.singletonList(aCustomer);
-		ArrayList<CustomerDTO> actual = resources.client().target("/customers").request()
-				.get(new GenericType<ArrayList<CustomerDTO>>() {
-				});
+		// ArrayList<CustomerDTO> actual =
+		// resources.client().target("http://localhost:9000/")
+		// .path("customers")
+		// .request()
+		// .get(new GenericType<ArrayList<CustomerDTO>>() {
+		// });
 		// //LOG.info(actual.get(0).toString());
 		// //Assertions.assertEquals(expected, actual);
 		// //Mockito.verify(customerDAO).get(5L);
-		// Mockito.verify(customerDAO).getAll();
 
-		System.out.println(actual.toString());
+		// Response response = resources.client().
+		System.out.println(resources.getJerseyTest().client().target("/customers").request().get()
+				.readEntity(new GenericType<ArrayList<CustomerDTO>>() {
+				}).toString());
 	}
 
 }

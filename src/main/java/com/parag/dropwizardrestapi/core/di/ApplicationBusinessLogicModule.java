@@ -1,7 +1,6 @@
 package com.parag.dropwizardrestapi.core.di;
 
 import com.google.inject.TypeLiteral;
-
 import com.parag.dropwizardrestapi.api.impl.CustomerDTO;
 import com.parag.dropwizardrestapi.db.BaseDAO;
 import com.parag.dropwizardrestapi.db.impl.CustomerDAO;
