@@ -3,12 +3,8 @@ package com.parag.dropwizardrestapi.resources.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,15 +15,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-import com.parag.dropwizardrestapi.DropwizardrestapiConfiguration;
 import com.parag.dropwizardrestapi.api.impl.CustomerDTO;
 import com.parag.dropwizardrestapi.core.di.TestApplicationBusinessLogicModule;
 import com.parag.dropwizardrestapi.core.testutils.GuiceJUnit5Extension;
-import com.parag.dropwizardrestapi.core.testutils.RestAPIIntigrationTester;
+import com.parag.dropwizardrestapi.core.testutils.RestAPIResourcesTester;
 import com.parag.dropwizardrestapi.db.BaseDAO;
 
-import io.dropwizard.testing.junit5.DropwizardAppExtension;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
+import io.dropwizard.testing.junit5.ResourceExtension;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 @ExtendWith(GuiceJUnit5Extension.class)
@@ -42,8 +37,7 @@ public class CustomerResourcesTest {
 	@Inject
 	private BaseDAO<CustomerDTO> customerDAO;
 
-	public static final DropwizardAppExtension<DropwizardrestapiConfiguration> DROPWIZARD = new DropwizardAppExtension<>(
-			RestAPIIntigrationTester.class, RestAPIIntigrationTester.getTestConfiguration());
+	public static final ResourceExtension resources = new RestAPIResourcesTester().addResource().build();
 
 	@BeforeEach
 	private void setUp() throws ParseException {
@@ -57,19 +51,16 @@ public class CustomerResourcesTest {
 	@Test
 	public void getAllCustomerTest() {
 
-		List<CustomerDTO> expected = Collections.singletonList(aCustomer);
-		ArrayList<CustomerDTO> actual = DROPWIZARD.client().target("http://localhost:9000/api/customers").request()
+		// List<CustomerDTO> expected = Collections.singletonList(aCustomer);
+		ArrayList<CustomerDTO> actual = resources.client().target("/customers").request()
 				.get(new GenericType<ArrayList<CustomerDTO>>() {
 				});
-		Response response = DROPWIZARD.client().target("http://localhost:9000/api/customers")
-				.request(MediaType.APPLICATION_JSON_TYPE).get();
-		LOG.info("Response --- " + response.readEntity(String.class));
-		// LOG.info(actual.get(0).toString());
-		// Response response = customerResources.getById(5);
-		// System.out.println(response.getEntity().toString());
-		// Assertions.assertEquals(expected, actual);
-		// Mockito.verify(customerDAO).get(5L);
+		// //LOG.info(actual.get(0).toString());
+		// //Assertions.assertEquals(expected, actual);
+		// //Mockito.verify(customerDAO).get(5L);
+		// Mockito.verify(customerDAO).getAll();
 
+		System.out.println(actual.toString());
 	}
 
 }
