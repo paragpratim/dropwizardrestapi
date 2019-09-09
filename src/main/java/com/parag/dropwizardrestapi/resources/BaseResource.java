@@ -10,7 +10,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-public interface BaseResource<T> {
+import com.parag.dropwizardrestapi.api.BaseDTO;
+import com.parag.dropwizardrestapi.db.BaseDAO;
+
+public interface BaseResource<T extends BaseDTO> {
 
 	@GET
 	Response getAll();
@@ -30,4 +33,5 @@ public interface BaseResource<T> {
 	@Path("/{id}")
 	Response deleteById(@PathParam("id") Integer id);
 
+	BaseDAO<T> getDAO();
 }

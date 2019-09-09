@@ -33,7 +33,6 @@ public class CustomerResources implements BaseResource<CustomerDTO> {
 
 	@Override
 	public Response getAll() {
-		System.out.println(customerDAO.getClass().toString());
 		return Response.ok(customerDAO.getAll()).build();
 	}
 
@@ -80,4 +79,8 @@ public class CustomerResources implements BaseResource<CustomerDTO> {
 		}
 	}
 
+	@Override
+	public BaseDAO<CustomerDTO> getDAO() {
+		return this.customerDAO;
+	}
 }

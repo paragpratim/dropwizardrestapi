@@ -3,9 +3,17 @@ package com.parag.dropwizardrestapi.resources.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,64 +22,77 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.parag.dropwizardrestapi.api.impl.CustomerDTO;
-import com.parag.dropwizardrestapi.core.di.TestApplicationBusinessLogicModule;
-import com.parag.dropwizardrestapi.core.testutils.GuiceJUnit5Extension;
-import com.parag.dropwizardrestapi.db.BaseDAO;
-import com.parag.dropwizardrestapi.resources.BaseResource;
+import com.parag.dropwizardrestapi.core.testutils.RestAPIResourcesTester;
+import com.parag.dropwizardrestapi.db.impl.CustomerDAO;
 
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import io.dropwizard.testing.junit5.ResourceExtension;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
-@ExtendWith(GuiceJUnit5Extension.class)
-@GuiceJUnit5Extension.GuiceModules(TestApplicationBusinessLogicModule.class)
 public class CustomerResourcesTest {
 
 	public static final Logger LOG = LoggerFactory.getLogger(CustomerResourcesTest.class);
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD");
 	private CustomerDTO aCustomer;
 
-	@Inject
-	private BaseDAO<CustomerDTO> customerDAO;
-
-	@Inject
-	private static BaseResource<CustomerDTO> customerResources;
-
-	private ResourceExtension resources = ResourceExtension.builder().build();
+	private static final List<Integer> SUCCESS_HTTP_CODE = Arrays.asList(200, 201);
+	private static final RestAPIResourcesTester RESOURCE_TESTER = new RestAPIResourcesTester();
+	private static final ResourceExtension RESOURCES = RESOURCE_TESTER.addResource(CustomerResources.class).build();
+	private static final CustomerDAO CUSTOMER_DAO = (CustomerDAO) RESOURCE_TESTER.getResources(CustomerResources.class)
+			.getDAO();
 
 	@BeforeEach
 	public void setUp() throws ParseException {
-		//resources.
 		aCustomer = new CustomerDTO(5, "Parag", "Ghosh", "paragpratim@gmail.com", dateFormat.parse("2019-08-24"));
-		Mockito.when(customerDAO.get(ArgumentMatchers.anyLong())).thenReturn(aCustomer);
+		Mockito.when(CUSTOMER_DAO.get(ArgumentMatchers.anyLong())).thenReturn(aCustomer);
+
 		ArrayList<CustomerDTO> customers = new ArrayList<>();
 		customers.add(aCustomer);
-		Mockito.when(customerDAO.getAll()).thenReturn(customers);
+		Mockito.when(CUSTOMER_DAO.getAll()).thenReturn(customers);
+	}
+
+	@AfterEach
+	public void tearDown() {
+		Mockito.reset(CUSTOMER_DAO);
+	}
+
+	@Test // Get all the resources test.
+	public void getAllCustomerTest() {
+		List<CustomerDTO> expected = Collections.singletonList(aCustomer);
+		ArrayList<CustomerDTO> actual = RESOURCES.client().target("/customers").request()
+				.get(new GenericType<ArrayList<CustomerDTO>>() {
+				});
+		Assertions.assertEquals(actual.size(), 1);
+		Assertions.assertEquals(expected.get(0).toString(), actual.get(0).toString());
+		Mockito.verify(CUSTOMER_DAO).getAll();
+	}
+
+	@Test // Get resource by id test.
+	public void getCustomerByIdTest() {
+		CustomerDTO actual = RESOURCES.client().target("/customers/5").request().get(CustomerDTO.class);
+		Assertions.assertEquals(aCustomer.toString(), actual.toString());
+		Mockito.verify(CUSTOMER_DAO).get(5);
 	}
 
 	@Test
-	public void getAllCustomerTest() {
-
-		// List<CustomerDTO> expected = Collections.singletonList(aCustomer);
-		// ArrayList<CustomerDTO> actual =
-		// resources.client().target("http://localhost:9000/")
-		// .path("customers")
-		// .request()
-		// .get(new GenericType<ArrayList<CustomerDTO>>() {
-		// });
-		// //LOG.info(actual.get(0).toString());
-		// //Assertions.assertEquals(expected, actual);
-		// //Mockito.verify(customerDAO).get(5L);
-
-		// Response response = resources.client().
-		System.out.println(resources.getJerseyTest().client().target("/customers").request().get()
-				.readEntity(new GenericType<ArrayList<CustomerDTO>>() {
-				}).toString());
+	public void createCustomerTest() {
+		Entity<CustomerDTO> entity = Entity.entity(aCustomer, MediaType.APPLICATION_JSON_TYPE);
+		Response actual = RESOURCES.client().target("/customers").request().post(entity);
+		Assertions.assertTrue(SUCCESS_HTTP_CODE.contains(actual.getStatus()));
+		Mockito.verify(CUSTOMER_DAO).get(5);
+	}
+	
+	@Test
+	public void updateCustomerTest()
+	{
+		
+	}
+	
+	@Test
+	public void deleteCustomerTest()
+	{
+		
 	}
 
 }
-
-//
