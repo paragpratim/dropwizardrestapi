@@ -82,17 +82,20 @@ public class CustomerResourcesTest {
 		Assertions.assertTrue(SUCCESS_HTTP_CODE.contains(actual.getStatus()));
 		Mockito.verify(CUSTOMER_DAO).get(5);
 	}
-	
+
 	@Test
-	public void updateCustomerTest()
-	{
-		
+	public void updateCustomerTest() {
+		Entity<CustomerDTO> entity = Entity.entity(aCustomer, MediaType.APPLICATION_JSON_TYPE);
+		Response actual = RESOURCES.client().target("/customers/5").request().put(entity);
+		Assertions.assertTrue(SUCCESS_HTTP_CODE.contains(actual.getStatus()));
+		Mockito.verify(CUSTOMER_DAO).get(5);
 	}
-	
+
 	@Test
-	public void deleteCustomerTest()
-	{
-		
+	public void deleteCustomerTest() {
+		Response actual = RESOURCES.client().target("/customers/5").request().delete();
+		Assertions.assertTrue(SUCCESS_HTTP_CODE.contains(actual.getStatus()));
+		Mockito.verify(CUSTOMER_DAO).get(5);
 	}
 
 }
